@@ -1,0 +1,43 @@
+version: '2'
+services:
+  web:
+    build: .
+    ports:
+      - 8081:80
+    volumes:
+      - .:/var/www
+    environment:
+      DATABASE_URL: test
+    networks:
+      - frontend
+
+  datastore:
+    image: mysql:8.0
+    env_file: .env
+    ports:
+      - 23306:3306
+    volumes:
+      - datastore_data:/var/lib/mysql
+    networks:
+      - frontend
+
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes:
+      - cache:/data
+    networks:
+      - frontend
+
+volumes:
+  datastore_data:
+
+  cache:
+
+networks:
+  frontend:
+
+  backend:
