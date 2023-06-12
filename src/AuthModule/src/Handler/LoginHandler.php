@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace AuthModule\Handler;
 
+use AuthModule\Authentication\AuthenticatedIdentity;
 use AuthModule\Hal\Entity\LoginResource;
+use Mezzio\Authentication\UserInterface;
 use Mezzio\Hal\HalResponseFactory;
 use Mezzio\Hal\ResourceGenerator;
+use Mezzio\Session\Session;
+use Mezzio\Session\SessionMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -34,16 +38,24 @@ class LoginHandler implements RequestHandlerInterface
         $this->responseFactory = $responseFactory;
     }
 
-    public function handle(ServerRequestInterface $request) : ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        /** @var AuthenticatedIdentity $loggedUser */
+        $loggedUser = $request->getAttribute(UserInterface::class);
+
+        /** @var Session $session */
+        $session = $request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
+
         $loginHal = new LoginResource();
-        $loginHal->setEmail('aaa@aaa.com');
+        $loginHal->setUserId($loggedUser->getUserId())
+            ->setSessionId($session->getId())
+            ->setUserName($loggedUser->getIdentity());
 
         $entity = $this->resourceGenerator->fromObject(
             $loginHal,
             $request
         );
 
-        return $this->responseFactory->createResponse($request, $entity, );
+        return $this->responseFactory->createResponse($request, $entity);
     }
 }

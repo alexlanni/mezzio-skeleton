@@ -4,7 +4,9 @@ namespace AuthModule\Factory;
 
 use Laminas\Stratigility\Middleware\ErrorHandler;
 use Mezzio\Application;
+use Mezzio\Authentication\AuthenticationMiddleware;
 use Mezzio\Authentication\OAuth2\TokenEndpointHandler;
+use Mezzio\Authorization\AuthorizationMiddleware;
 use Mezzio\Handler\NotFoundHandler;
 use Mezzio\Helper\ServerUrlMiddleware;
 use Mezzio\Helper\UrlHelperMiddleware;
@@ -21,15 +23,19 @@ class PipelineAndRoutesDelegator
         ContainerInterface $container,
         string $serviceName,
         callable $callback
-    ) : Application {
+    ): Application {
         /** @var $app Application */
         $app = $callback();
+
+
 
         // Setup pipeline:
         $app->pipe(ErrorHandler::class);
         $app->pipe(ServerUrlMiddleware::class);
         $app->pipe(\Mezzio\Session\SessionMiddleware::class);
         $app->pipe(RouteMiddleware::class);
+        $app->pipe(AuthenticationMiddleware::class);
+        $app->pipe(AuthorizationMiddleware::class);
         $app->pipe(ImplicitHeadMiddleware::class);
         $app->pipe(ImplicitOptionsMiddleware::class);
         $app->pipe(MethodNotAllowedMiddleware::class);
@@ -46,8 +52,18 @@ class PipelineAndRoutesDelegator
 
         $app->get(
             '/api/health-check',
-            \AuthModule\Handler\HealthCheckHandler::class,
+            [
+                \AuthModule\Handler\HealthCheckHandler::class
+            ],
             'api.health-check'
+        );
+
+        $app->get(
+            '/unauthorized',
+            [
+                \AuthModule\Handler\UnauthorizedHandler::class
+            ],
+            'unauthorized'
         );
 
 

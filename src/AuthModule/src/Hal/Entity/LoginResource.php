@@ -10,8 +10,6 @@ class LoginResource
 
     public string $userName;
 
-    public string $email;
-
     /**
      * @return string
      */
@@ -65,23 +63,4 @@ class LoginResource
         $this->userName = $userName;
         return $this;
     }
-
-    /**
-     * @return string
-     */
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param string $email
-     * @return LoginResource
-     */
-    public function setEmail(string $email): LoginResource
-    {
-        $this->email = $email;
-        return $this;
-    }
-
 }

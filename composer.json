@@ -48,6 +48,7 @@
     "require": {
         "php": "~8.0.0 || ~8.1.0 || ~8.2.0",
         "composer/package-versions-deprecated": "^1.10.99",
+        "doctrine/doctrine-orm-module": "^5.2",
         "laminas/laminas-component-installer": "^2.6 || ^3.0",
         "laminas/laminas-config-aggregator": "^1.6",
         "laminas/laminas-diactoros": "^2.24.2",
@@ -55,19 +56,23 @@
         "laminas/laminas-servicemanager": "^3.4",
         "laminas/laminas-stdlib": "^3.6",
         "mezzio/mezzio": "^3.7",
+        "mezzio/mezzio-authentication": "^1.7",
+        "mezzio/mezzio-authorization-rbac": "^1.5",
         "mezzio/mezzio-hal": "^2.6",
         "mezzio/mezzio-helpers": "^5.7",
         "mezzio/mezzio-laminasrouter": "^3.0.1",
         "mezzio/mezzio-laminasviewrenderer": "^2.2",
+        "mezzio/mezzio-problem-details": "^1.11",
         "mezzio/mezzio-session-ext": "^1.16",
         "vlucas/phpdotenv": "^5.5"
     },
     "require-dev": {
+        "filp/whoops": "^2.7.1",
         "laminas/laminas-development-mode": "^3.3.0",
-        "phpunit/phpunit": "^9.5.11",
         "mezzio/mezzio-tooling": "^2.8",
+        "phpunit/phpunit": "^9.5.11",
         "roave/security-advisories": "dev-master",
-        "filp/whoops": "^2.7.1"
+        "squizlabs/php_codesniffer": "*"
     },
     "autoload": {
         "psr-4": {

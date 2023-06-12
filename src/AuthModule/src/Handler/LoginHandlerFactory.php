@@ -11,15 +11,12 @@ use Psr\Container\ContainerInterface;
 
 class LoginHandlerFactory
 {
-    public function __invoke(ContainerInterface $container) : LoginHandler
+    public function __invoke(ContainerInterface $container): LoginHandler
     {
         $resourceGenerator = $container->get(ResourceGenerator::class);
         $responseFactory = $container->get(HalResponseFactory::class);
 
         $config = $container->get('config');
-
-        print_r($config);
-        die;
 
         return new LoginHandler(
             $container->get(TemplateRendererInterface::class),

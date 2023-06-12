@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace AuthModule\Handler;
 
-use Mezzio\Authentication\UserInterface;
-use Mezzio\Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Mezzio\Template\TemplateRendererInterface;
 
-class HealthCheckHandler implements RequestHandlerInterface
+class UnauthorizedHandler implements RequestHandlerInterface
 {
     /**
      * @var TemplateRendererInterface
@@ -26,19 +24,10 @@ class HealthCheckHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-
-        $user = $request->getAttribute(UserInterface::class);
-
-        $session = $request->getAttribute(
-            SessionInterface::class
-        );
-
-        $session->persistSessionFor(60 * 60 * 24 * 7); // persist for 7 days
-
         // Do some work...
         // Render and return a response:
         return new HtmlResponse($this->renderer->render(
-            'auth-module::healt-check',
+            'auth-module::unauthorized',
             [] // parameters to pass to template
         ));
     }

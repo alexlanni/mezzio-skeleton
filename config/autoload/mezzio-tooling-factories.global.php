@@ -13,7 +13,7 @@ declare(strict_types=1);
 return [
     'dependencies' => [
         'factories' => [
-            AuthModule\Handler\HealthCheckHandler::class => AuthModule\Handler\HealthCheckHandlerFactory::class,
+
         ],
     ],
 ];
